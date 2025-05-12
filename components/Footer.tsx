@@ -1,218 +1,145 @@
-import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
-
+import { View, Text, StyleSheet, Pressable, Linking } from 'react-native';
 import { useRouter } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
+import { useState } from 'react';
 
-type RoutePath = '/' | '/diplomes' | '/formations' | '/albums' | '/contact';
+const NAV_LINKS = [
+  [
+    { label: 'Accueil', route: '/' },
+    { label: 'Formations', route: '/formations' },
+    { label: 'Albums', route: '/albums' },
+    { label: 'Contact', route: '/contact' },
+  ],
+  [
+    { label: 'Diplômes', route: '/diplomes' },
+    { label: 'Santé', route: '/sante' },
+    { label: 'Beauté', route: '/beaute' },
+    { label: 'Sport', route: '/sport' },
+  ],
+  [
+    { label: 'Modélisme', route: '/modelisme' },
+    { label: 'EPS', route: '/eps' },
+    { label: 'Métiers', route: '/metiers' },
+    { label: 'Plus', route: '/plus' },
+  ],
+  [
+    { label: 'Aide', route: '/aide' },
+    { label: 'FAQ', route: '/faq' },
+    { label: 'Support', route: '/support' },
+    { label: 'Mentions', route: '/mentions' },
+  ],
+];
 
-export default function Footer(): JSX.Element {
+const SOCIALS = [
+  { name: 'facebook', url: 'https://www.facebook.com/EcoleJahInformatique' },
+  { name: 'instagram', url: 'https://instagram.com/jahinformatiqueplus' },
+  { name: 'youtube', url: 'https://www.youtube.com/@jahinformatique' },
+];
+
+export default function Footer() {
   const router = useRouter();
+  const [email, setEmail] = useState('');
 
-  const handleEmailPress = (): void => {
-    Linking.openURL('mailto:jah.informatique@gmail.com');
-  };
-
-  const handlePhonePress = (phone: string): void => {
-    Linking.openURL(`tel:${phone}`);
-  };
-
-  const handleLocationPress = (): void => {
-    Linking.openURL('https://maps.google.com/?q=Lo+Houssna+2+Mhamid+Marrakech');
-  };
-
-  const handleRoutePress = (route: string): void => {
+  const handleRoutePress = (route: string) => {
     router.push(route as any);
   };
-  const handleFbIconPress = (): void => {
-    Linking.openURL('https://www.facebook.com/EcoleJahInformatique');
-  }
-  const handleInstaIconPress = (): void => {
-    Linking.openURL('https://www.instagram.com/jahinformatiqueplus/');
-  }
-  const handleYoutubeIconPress = (): void => {
-    Linking.openURL('https://www.youtube.com/@jahinformatique');
-  }
-  const handleURLroute = (url: string): void => {
-    Linking.openURL(url);
-  }
 
   return (
     <View style={styles.footer}>
-      {/* Jah Informatiques Plus Section */}
-      <View style={styles.section}>
-        <View style={styles.titleContainer}>
-          <TouchableOpacity onPress={()=> Linking.openURL('https://www.facebook.com/EcoleJahInformatique')}>
-            <FontAwesome name="map-marker"  size={20} color="#0EB582" />
-          </TouchableOpacity>
-          <Text style={styles.sectionTitle}>Jah Informatiques Plus</Text>
-        </View>
-        <Text style={styles.description}>
-          JAH INFORMATIQUE PLUS est une école de formation professionnelle privée.
-        </Text>
-        <View style={styles.socialLinks}>
-          <TouchableOpacity 
-          onPress={() => handleFbIconPress()}
-          style={styles.socialButton}>
-            <FontAwesome name="facebook" size={24} color="#0EB582" />
-          </TouchableOpacity>
-          <TouchableOpacity 
-          onPress={() => handleYoutubeIconPress()}
-          style={styles.socialButton}>
-            <FontAwesome name="youtube-play" size={24} color="#0EB582" />
-          </TouchableOpacity>
-        </View>
+      {/* Social Icons */}
+      <View style={styles.socialRow}>
+        {SOCIALS.map((item) => (
+          <Pressable key={item.name} style={styles.socialIcon} onPress={() => Linking.openURL(item.url)}>
+            <FontAwesome name={item.name as any} size={18} color="#fff" />
+          </Pressable>
+        ))}
       </View>
 
-      {/* Liens Rapides Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Liens Rapides</Text>
-        <TouchableOpacity onPress={() => handleRoutePress('/')}>
-          <Text style={styles.link}>Accueil</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity onPress={() => handleRoutePress('/formations')}>
-          <Text style={styles.link}>Formations</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleRoutePress('/albums')}>
-          <Text style={styles.link}>Albums</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleRoutePress('/Contact')}>
-          <Text style={styles.link}>Contact</Text>
-        </TouchableOpacity>
+     
+
+      {/* Description */}
+      <Text style={styles.description}>
+      Cette application est conçue pour offrir une formation de qualité aux participants désireux d'améliorer leurs compétences professionnelles. Elle propose une variété de formations et de diplômes reconnus, en collaboration avec des partenaires de renom, pour répondre aux besoins du marché du travail.
+      </Text>
+
+      {/* Links Columns */}
+      <View style={styles.linksRow}>
+        {NAV_LINKS.map((col, idx) => (
+          <View style={styles.linkCol} key={idx}>
+            
+            {col.map((link) => (
+              <Pressable key={link.label} onPress={() => handleRoutePress(link.route)}>
+                <Text style={styles.link}>{link.label}</Text>
+              </Pressable>
+            ))}
+          </View>
+        ))}
       </View>
 
-      {/* Contactez-Nous Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Contactez-Nous</Text>
-        <TouchableOpacity onPress={handleEmailPress} style={styles.contactItem}>
-          <FontAwesome name="envelope" size={16} color="#0EB582" style={styles.contactIcon} />
-          <Text style={styles.contactText}>jah.informatique@gmail.com</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleLocationPress} style={styles.contactItem}>
-          <FontAwesome name="map-marker" size={16} color="#0EB582" style={styles.contactIcon} />
-          <Text style={styles.contactText}>Lo Houssna 2 Mhamid (coté de mosquée al mohcininie Marrakech)</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handlePhonePress('+212524371619')} style={styles.contactItem}>
-          <FontAwesome name="phone" size={16} color="#0EB582" style={styles.contactIcon} />
-          <Text style={styles.contactText}>+212 5 24 37 16 19</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handlePhonePress('+212661729887')} style={styles.contactItem}>
-          <FontAwesome name="phone" size={16} color="#0EB582" style={styles.contactIcon} />
-          <Text style={styles.contactText}>+212 6 61 72 98 87</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Liens Utiles Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Liens Utiles</Text>
-        <TouchableOpacity style={styles.concateTextIcon} onPress={() => handleURLroute('https://www.facebook.com/profile.php?id=100086303923903')}>
-          <FontAwesome name="facebook" size={16} color="#0EB582" style={styles.contactIcon} />
-          <Text style={styles.link}>Ecole Jah Marrakech Département Santé et Beauté</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.concateTextIcon} onPress={() => handleURLroute('https://www.facebook.com/EcoleJahModeliste')}>
-          <FontAwesome name="facebook" size={16} color="#0EB582" style={styles.contactIcon} />
-          <Text style={styles.link}>Ecole JAH Marrakech Modélisme Stylisme</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.concateTextIcon} onPress={() => handleURLroute('https://www.facebook.com/EcoleJahEPS')}>
-          <FontAwesome name="facebook" size={16} color="#0EB582" style={styles.contactIcon} />
-          <Text style={styles.link}>Ecole JAH Education Physique et Sportive</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.concateTextIcon} onPress={() => handleURLroute('https://www.facebook.com/profile.php?id=100086481996373')}>
-          <FontAwesome name="facebook" size={16} color="#0EB582" style={styles.contactIcon} />
-          <Text style={styles.link}>Ecole JAH des Métiers Marrakech</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Copyright Section */}
-      <View style={styles.copyright}>
-        <Text style={styles.copyright}>
-          Copyright © {new Date().getFullYear()} Jah Informatique Plus -All Right Reserved
-        </Text>
-      </View>
+      {/* Copyright */}
+      <Text style={styles.copyright}>
+        © {new Date().getFullYear()} Copyright: Jah Informatique Plus
+      </Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   footer: {
-    backgroundColor: '#E8F5F1',
-    padding: 20,
-  },
-  section: {
-    marginBottom: 30,
-    backgroundColor: 'transparent',
-  },
-  titleContainer: {
-    flexDirection: 'row',
+    backgroundColor: '#000',
+    paddingVertical: 24,
+    paddingHorizontal: 12,
     alignItems: 'center',
-    marginBottom: 10,
-    backgroundColor: 'transparent',
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontFamily: 'Poppins-Bold',
-    color: '#333333',
-    marginBottom: 15,
-    marginLeft: 8,
-    backgroundColor: 'transparent',
+  socialRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 18,
+    gap: 18,
+  },
+  socialIcon: {
+    marginHorizontal: 8,
+    width: 40,
+    height: 40,
+    backgroundColor: '#3a3232',
+    borderRadius: 50,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   description: {
-    fontSize: 14,
-    color: '#666666',
-    marginBottom: 15,
-    fontFamily: 'Poppins-Regular',
+    color: '#fff',
+    textAlign: 'center',
+    marginBottom: 18,
+    fontSize: 10,
     lineHeight: 20,
   },
-  socialLinks: {
+  linksRow: {
     flexDirection: 'row',
-    marginTop: 10,
-    backgroundColor: 'transparent',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginBottom: 18,
   },
-  socialButton: {
-    marginRight: 15,
+  linkCol: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  linkColTitle: {
+    color: '#fff',
+    fontWeight: 'bold',
+    marginBottom: 8,
+    fontSize: 15,
   },
   link: {
-    fontSize: 14,
-    color: '#666666',
-    // marginBottom: 10,
-    fontFamily: 'Poppins-Regular',
-  },
-  contactItem: {
-    display: 'flex', 
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 12,
-  },
-  contactIcon: {
-    marginRight: 10,
-    marginTop: 3,
-  },
-  contactText: {
-    fontSize: 14,
-    color: '#666666',
-    fontFamily: 'Poppins-Regular',
-    flex: 1,
+    color: '#fff',
+    marginBottom: 6,
+    fontSize: 13,
   },
   copyright: {
-    borderTopWidth: 1,
-    borderTopColor: '#dddddd',
-    paddingTop: 20,
-    marginTop: 20,
-    backgroundColor: 'transparent',
-  },
-  copyrightText: {
-    fontSize: 12,
-    color: '#666666',
+    color: '#fff',
     textAlign: 'center',
-    fontFamily: 'Poppins-Regular',
-    backgroundColor: 'transparent',
-  },
-  concateTextIcon: {
-    display: 'flex',
-    flexDirection: 'row',
-
-    alignItems: 'center',
-    marginBottom: 12,
+    fontSize: 12,
+    marginTop: 10,
+    opacity: 0.7,
   },
 }); 

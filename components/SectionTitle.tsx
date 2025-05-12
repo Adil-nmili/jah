@@ -1,19 +1,20 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-import {ChevronRight, ChevronRightCircle} from 'lucide-react-native'
+import { Ionicons } from '@expo/vector-icons';
 
 interface SectionTitleProps {
   title: string;
+  color?: string;
 }
 
-export default function SectionTitle({ title }: SectionTitleProps): JSX.Element {
+export default function SectionTitle({ title, color = '#ea982b' }: SectionTitleProps): JSX.Element {
   return (
     <View style={styles.container}>
-      <ChevronRightCircle size={20} style={styles.titleIcon} />
+      <Ionicons name="earth" size={20} style={[styles.titleIcon, { color }]} />
       <View style={styles.lineContainer}>
-        <Text style={styles.title}>{title}</Text>
-        <View style={styles.line}></View>
+        <Text style={[styles.title, { color }]}>{title}</Text>
+        {/* <View style={[styles.line, { backgroundColor: color }]}></View> */}
       </View>
     </View>
   );
@@ -33,6 +34,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'TimesNewRomanBold',
     letterSpacing: 1,
+    textAlign: 'center',
     textShadowColor: '#0000008',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
@@ -42,11 +44,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  
   titleIcon: {
-    color: '#fff',
-    backgroundColor: '#0000FF',
-    borderRadius: 50,
-    padding: 5,
+    color: '#ea982b',
   },
   lineContainer: {
     display: 'flex',
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   line: {
     width: '80%',
     height: 2,
-    backgroundColor: '#0000FF',
+    backgroundColor: '#ea982b',   
   },
 });
 

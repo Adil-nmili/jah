@@ -1,54 +1,47 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import formationData from '@/data/formationData.json';
 
 interface Diplome {
   id: string;
   titre: string;
-  duree: string;
+  description: string;
   icone: string;
 }
 
-export default function NosDiplomes(): JSX.Element {
-  const [diplomes, setDiplomes] = useState<Diplome[]>([]);
+export default function NosDiplomes({ diplome }: { diplome: Diplome[] }): JSX.Element {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const [diplomes, setDiplomes] = useState<Diplome[]>([]);
 
   useEffect(() => {
-    setDiplomes(
-      formationData.diplomes.map((diplome) => ({
-        ...diplome,
-        id: String(diplome.id),
-      }))
-    );
-  }, []);
-
-  
+    if (diplome) {
+      setDiplomes(diplome);
+    }
+  }, [diplome]);
 
   return (
     <View style={styles.container}>
-      {diplomes.map((diplome) => (
+
+      { diplomes.length > 0 ? diplomes.map((dip) => (
         <TouchableOpacity
-          key={diplome.id}
+          key={dip.id}
           style={[
             styles.diplomeCard,
-            hoveredCard === diplome.id && styles.diplomeCardHover
+            hoveredCard === dip.id && styles.diplomeCardHover
           ]}
-          
-          onPressIn={() => setHoveredCard(diplome.id)}
+          onPressIn={() => setHoveredCard(dip.id)}
           onPressOut={() => setHoveredCard(null)}
         >
           <Ionicons
-            name={diplome.icone as any}
+            name={dip.icone ? dip.icone as any : 'book-outline'}
             size={40}
             color="#0000FF"
             style={styles.icon}
           />
-          <Text style={styles.diplomeTitle}>{diplome.titre}</Text>
-          <Text style={styles.diplomeDuree}>{diplome.duree}</Text>
+          <Text style={styles.diplomeTitle}>{dip.titre}</Text>
+          <Text style={styles.diplomeDuree}>{dip.description}</Text>
         </TouchableOpacity>
-      ))}
+      )) : <Text style={styles.noDiplome}>Aucun diplôme trouvé</Text>}
     </View>
   );
 }
@@ -93,5 +86,14 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginBottom: 8,
+  },
+  noDiplome: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#000070',
+    textAlign: 'center',
+    backgroundColor: '#F0FDFA',
+    padding: 16,
+    borderRadius: 12,
   },
 });

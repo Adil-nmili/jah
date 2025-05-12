@@ -13,20 +13,20 @@ const objectifs: Objectif[] = [
   {
     id: 1,
     title: "Formations",
-    number: 66,
+    number: 22,
     icon: "newspaper-outline",
   },
   {
     id: 2,
-    title: "Objectif 2",
+    title: "Etudiants",
     icon: "book",
-    number: 6540,
+    number: 2200,
   },
   {
     id: 3,
-    title: "Objectif 3",
+    title: "Diplômats",
     icon: "medal-outline",
-    number: 157,
+    number: 1600,
   },
 ];
 
@@ -54,7 +54,7 @@ export default function ObjectifCard(): JSX.Element {
               hoveredCard === item.id && styles.objectifCardIconHover
             ]}
           />
-          <Text style={styles.objectifCardText}>{item.number}</Text>
+          <Text style={styles.objectifCardText}>+{item.number}</Text>
           <Text style={styles.objectifCardText}>{item.title}</Text>
         </TouchableOpacity>
       ))}
@@ -76,11 +76,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F0FDFA',
+    backgroundColor: '#f28c07',
     padding: 10,
     width: '48%',
     borderWidth: 2,
-    borderColor: '#0EB582',
+    borderColor: '#f28c07',
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -92,10 +92,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   objectifCardIcon: {
-    color: '#0EB582',
+    color: '#fff',
   },
   objectifCardHover: {
-    backgroundColor: '#0EB582',
+    backgroundColor: '#f28c07',
   },
   objectifCardIconHover: {
     color: '#fff',
